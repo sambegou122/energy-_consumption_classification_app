@@ -1,0 +1,3 @@
+[console_scripts]
+predict = energy_forecast.predict:predict
+retrain = energy_forecast.retrain:retrain
