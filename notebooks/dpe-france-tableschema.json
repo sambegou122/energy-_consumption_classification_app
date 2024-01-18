@@ -1,0 +1,103 @@
+{
+  "fields": [
+    {
+      "name": "nom_methode_dpe",
+      "title": "Nom de la méthode DPE utilisée",
+      "type": "string",
+      "description": "Nom de la méthode DPE utilisée"
+    },
+    {
+      "name": "version_methode_dpe",
+      "title": "Version de la méthode DPE utilisée",
+      "type": "string",
+      "description": "Version de la méthode DPE utilisée"
+    },
+    {
+      "name": "date_etablissement_dpe",
+      "title": "Date DPE",
+      "type": "string",
+      "rdfType": "http://schema.org/Date"
+    },
+    {
+      "name": "consommation_energie",
+      "title": "Consommation énergie en kWhEP/m².an",
+      "type": "number",
+      "description": "Consommation énergie en kWhEP/m².an"
+    },
+    {
+      "name": "classe_consommation_energie",
+      "title": "Classement consommation d'énergie",
+      "type": "string",
+      "description": "Classement consommation d'énergie"
+    },
+    {
+      "name": "estimation_ges",
+      "title": "Estimation GES en Kg eqCO2/m².an",
+      "type": "number",
+      "description": "Estimation GES en Kg eqCO2/m².an"
+    },
+    {
+      "name": "classe_estimation_ges",
+      "title": "Classement GES",
+      "type": "string",
+      "description": "Classement GES"
+    },
+    {
+      "name": "annee_construction",
+      "title": "Année de construction ou évaluation de cette date",
+      "type": "integer",
+      "description": "Année de construction ou évaluation de cette date"
+    },
+    {
+      "name": "surface_thermique_lot",
+      "title": "Surface thermique du lot pour un bâtiment à usage principal autre qu'habitation",
+      "type": "number",
+      "description": "Surface thermique du lot pour un bâtiment à usage principal autre qu'habitation"
+    },
+    {
+      "name": "latitude",
+      "title": "Latitude du Bâtiment",
+      "type": "number",
+      "description": "Latitude du Bâtiment",
+      "rdfType": "http://schema.org/latitude"
+    },
+    {
+      "name": "longitude",
+      "title": "Longitude du Bâtiment",
+      "type": "number",
+      "description": "Longitude du Bâtiment",
+      "rdfType": "http://schema.org/longitude"
+    },
+    {
+      "name": "tr001_modele_dpe_type_libelle",
+      "title": "Type de DPE",
+      "type": "string",
+      "description": "Type de DPE"
+    },
+    {
+      "name": "tr002_type_batiment_description",
+      "title": "Type de bâtiment",
+      "type": "string",
+      "description": "Type de bâtiment"
+    },
+    {
+      "name": "code_insee_commune_actualise",
+      "title": "Code INSEE Commune",
+      "type": "string",
+      "rdfType": "http://rdf.insee.fr/def/geo#codeCommune"
+    },
+    {
+      "name": "tv016_departement_code",
+      "title": "Code département",
+      "type": "string"
+    },
+    {
+      "name": "geo_adresse",
+      "type": "string"
+    },
+    {
+      "name": "geo_score",
+      "type": "number"
+    }
+  ]
+}

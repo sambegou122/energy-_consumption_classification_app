@@ -3,32 +3,44 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import accuracy_score
 from energy_forecast.Dataloader import Dataloader
+from sklearn.pipeline import Pipeline
+import pickle
+import xgboost as xgb
 
 class ModelManager():
 
-    def __init__(self, model, data) -> None:
+    def __init__(self, model, encoder, data) -> None:
         self.model = model
+        self.encoder = encoder
         self.data = data
 
-    def predict(self)-> str:
+    def predict(self, x)-> list:
         """Predict the sentiment of the input text."""
-        prediction = self.model.predict(self.data)
+        prediction = self.model.predict(x)
+        prediction = self.encoder.inverse_transform(prediction)
         return prediction
     
 
     def retrain(self, training_set)-> int:
         """Retrain the model."""
-        
+
+        print("loading training data...")
         df = pd.read_csv(training_set, delimiter=',')
         
-        assert list(df.columns) == ['review', 'polarity'], f"Expected columns: ['review', 'polarity'], but got {df.columns}"
+        print("transforming training data...")
         df = Dataloader().transform(df)
+
         print("model training...")
-        self.model.fit(df)
+        
+        y = self.encoder.transform(df['classe_consommation_energie'])
+        x = pd.get_dummies(df.drop(['classe_consommation_energie'], axis=1))
+
+        self.model.fit(x,y) 
+
         print("model trained")
-        columns_to_drop = ['review', 'polarity']
-        x = df.drop(columns_to_drop, axis=1)
-        predictions = self.model.predict(x)
-        score = accuracy_score(df['polarity'], predictions)
-        print(f"Model accuracy: {score}")
+      
+        score = self.model.score(x, y)
+      
+        print(f"Model score: {score}")
+
         return score
