@@ -9,17 +9,20 @@ PREDICT_URL = "http://localhost:8000/predict"
 st.header("Energie Classification")
 # Text area for the user to enter their text
 
-annee_construction = st.number_input("annee_construction", min_value=0, max_value=100000, value=0)
-surface_thermique_lot = st.number_input("surface_thermique_lot", min_value=0, max_value=100000, value=0)
-code_insee_commune_actualise = st.number_input("code_insee_commune_actualise", min_value=0, max_value=100000, value=0)
+annee_construction = st.number_input("Année de construction", min_value=0, max_value=100000, value=0)
+surface_thermique_lot = st.number_input("Surface thermique lot", min_value=0, max_value=100000, value=0)
+code_insee_commune_actualise = st.number_input("Code insee de votre commune", min_value=0, max_value=100000, value=0)
 
-type_dpe = st.selectbox("type_dpe", ["batiment_public", "copropriete", "location", "neuf", "vente"])
-type_batiment = st.selectbox("type_batiment", ["batiment_collectif", "logement", "maison_individuelle"])
+type_dpe = st.selectbox("Type de dpe", ["batiment public", "copropriete", "location", "neuf", "vente"])
+type_batiment = st.selectbox("Type batiment", ["batiment collectif", "logement", "maison individuelle"])
 
-data_type_dpe = {"batiment_public": 0, "copropriete": 0, "location": 0, "neuf": 0, "vente": 0}
-data_type_batiment = {"batiment_collectif": 0, "logement": 0, "maison_individuelle": 0}
+data_type_dpe = {"batiment public": 0, "copropriete": 0, "location": 0, "neuf": 0, "vente": 0}
+data_type_batiment = {"batiment collectif": 0, "logement": 0, "maison individuelle": 0}
 data_type_dpe[type_dpe] = 1
 data_type_batiment[type_batiment] = 1
+
+data_type_dpe = {hey.replace(" ", "_"): value for hey, value in data_type_dpe.items()}
+data_type_batiment = {hey.replace(" ", "_"): value for hey, value in data_type_batiment.items()}
 
 data = {
     "annee_construction": annee_construction,

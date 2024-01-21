@@ -21,4 +21,9 @@ node_modules
 mlflow
 mlruns
 # ignore model
-model
+*.pkl
+# ignore model files
+models
+
+# ignore data files
+data

@@ -64,22 +64,32 @@ class Dataloader:
         filename = self.dir
         return pd.read_csv(filename, delimiter=",")
     
-    def transform(df):
+    def transform(self, df):
 
-        columns_drop = ["nom_methode_dpe", "version_methode_dpe", "date_etablissement_dpe", 
-                "geo_adresse", "geo_score", "consommation_energie", "estimation_ges", 
-                "latitude", "longitude", "tv016_departement_code",]
-        df = df.drop(columns_drop, axis=1)
+        assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    
+
+        columns_keep = ["annee_construction", "code_insee_commune_actualise", "surface_thermique_lot",
+                "tr001_modele_dpe_type_libelle", "tr002_type_batiment_description"]
+        
+        assert all([i in df.columns for i in columns_keep]), "df must have the following columns: annee_construction, code_insee_commune_actualise, surface_thermique_lot, tr001_modele_dpe_type_libelle, tr002_type_batiment_description"
+
+
+        df = df[columns_keep]
+
         
         df["code_insee_commune_actualise"] = (
             df["code_insee_commune_actualise"].\
                 apply(lambda x: float(re.sub('[^0-9]', '', str(x))) if re.sub('[^0-9]', '', str(x)) else 0)
         )
 
-        df.fillna(0, inplace=True)
         df = df.drop_duplicates()
-        
+
+        df.fillna(0, inplace=True)
+
         df = df.reindex(sorted(df.columns), axis=1)
+
+        df = pd.get_dummies(df)
 
         return df
 

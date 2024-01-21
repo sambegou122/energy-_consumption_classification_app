@@ -23,7 +23,7 @@ training_set = os.getenv("DATA_DIR")
 model_manager = ModelManager(model, encoder, training_set)
 
 
-app=FastAPI(title="Energie Classification", version="1", destription="Energie Classification API")
+app=FastAPI(title="Energie Classification", version="1")
 
 class PredictInput(BaseModel):
     annee_construction: int
@@ -40,51 +40,43 @@ class PredictInput(BaseModel):
 
 
 
-@app.post("/predict", summary="Predict sentiment of reviews")
+@app.get("/")
+async def root():
+    return "This Energie Classification API Go to /docs for documentation"
+
+@app.post("/predict")
 async def predict(input:PredictInput):
     """
-    Predict sentiment of reviews
+    Predict class of energy consumption
 
-    **param input**: list of reviews
-
-    **return**: list of sentiments
+    **return**: prediction
 
     """
     try:
        
         # Your prediction code here
-        columns = ['annee_construction', 'code_insee_commune_actualise','surface_thermique_lot',
-                   'tr001_modele_dpe_type_libelle_Bâtiment public','tr001_modele_dpe_type_libelle_Copropriété',
-                   'tr001_modele_dpe_type_libelle_Location','tr001_modele_dpe_type_libelle_Neuf',
+       columns = ['annee_construction', 'code_insee_commune_actualise',
+       'surface_thermique_lot',
+       'tr001_modele_dpe_type_libelle_Bâtiment public',
+       'tr001_modele_dpe_type_libelle_Copropriété',
+       'tr001_modele_dpe_type_libelle_Location',
+       'tr001_modele_dpe_type_libelle_Neuf',
        'tr001_modele_dpe_type_libelle_Vente',
        "tr002_type_batiment_description_Bâtiment collectif à usage principal d'habitation",
        'tr002_type_batiment_description_Logement',
        'tr002_type_batiment_description_Maison Individuelle'
        ]
-        
-        data = {
-            "annee_construction": input.annee_construction,
-            "surface_thermique_lot": input.surface_thermique_lot,
-            "code_insee_commune_actualise": input.code_insee_commune_actualise,
-            'tr001_modele_dpe_type_libelle_Bâtiment public': input.batiment_public,
-            'tr001_modele_dpe_type_libelle_Copropriété': input.copropriete,
-            'tr001_modele_dpe_type_libelle_Location': input.location,
-            'tr001_modele_dpe_type_libelle_Neuf': input.neuf,
-            'tr001_modele_dpe_type_libelle_Vente': input.vente,
-            "tr002_type_batiment_description_Bâtiment collectif à usage principal d'habitation": input.batiment_collectif,
-            'tr002_type_batiment_description_Logement': input.logement,
-            'tr002_type_batiment_description_Maison Individuelle': input.maison_individuelle
-            }
-        
-    
-        df = pd.DataFrame(data, index=[0])
-        df.columns = columns
+       
+       data = input.model_dump()
 
-        logging.info(df)
-    
-        predictions = model_manager.predict(df)
+       df = pd.DataFrame(data, index=[0])
+       df.columns = columns
 
-        return {"Classe consomation energie": predictions}
+       logging.info(df)
+
+       predictions = model_manager.predict(df)
+       
+       return {"Classe consomation energie": ' '.join(predictions)}
     
     except Exception as e:
 
@@ -97,11 +89,3 @@ async def predict(input:PredictInput):
 if __name__=="__main__":
 
     uvicorn.run(app, host="localhost", port=8000)
-    
-
-    
-
-    
-
-
-

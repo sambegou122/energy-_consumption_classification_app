@@ -5,18 +5,16 @@ import os
 from energy_forecast.Dataloader import Dataloader
 from energy_forecast.model_manager import ModelManager
 import click
+from xgboost import XGBClassifier
 load_dotenv()
-model = os.getenv("MODEL_DIR")
-training_set = os.getenv("DATA_DIR")
-encoder = os.getenv("ENCODER_DIR")
 
 
 
-def retrain(training_set, model, encoder):
+def retrain():
     """Retrain the model."""
-
-    model = pd.read_pickle(model)
-    encoder = pd.read_pickle(encoder)
+    training_set = os.getenv("DATA_DIR")
+    model = XGBClassifier()
+    encoder = pd.read_pickle(os.getenv("ENCODER_DIR"))
     model_manager = ModelManager(model, encoder, training_set)
     score = model_manager.retrain(training_set)
 

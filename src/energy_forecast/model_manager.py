@@ -18,29 +18,38 @@ class ModelManager():
         """Predict the sentiment of the input text."""
         prediction = self.model.predict(x)
         prediction = self.encoder.inverse_transform(prediction)
-        return prediction
+        return prediction.tolist()
     
 
     def retrain(self, training_set)-> int:
         """Retrain the model."""
 
         print("loading training data...")
-        df = pd.read_csv(training_set, delimiter=',')
+        try : 
+            df = pd.read_csv(training_set, delimiter=',')
+
+            y = self.encoder.transform(df['classe_consommation_energie'])
+            
+            print("transforming training data...")
+            x = df.drop(['classe_consommation_energie'], axis=1)
+            x = Dataloader().transform(x)
+            index= x.index
+            y= y[index]
+
+            print("model training...")
+            print(x.shape)
+
+            self.model.fit(x, y)
+
+            print("model trained")
         
-        print("transforming training data...")
-        df = Dataloader().transform(df)
-
-        print("model training...")
+            score = self.model.score(x, y)
         
-        y = self.encoder.transform(df['classe_consommation_energie'])
-        x = pd.get_dummies(df.drop(['classe_consommation_energie'], axis=1))
+          
 
-        self.model.fit(x,y) 
+        except Exception as e:
 
-        print("model trained")
-      
-        score = self.model.score(x, y)
-      
-        print(f"Model score: {score}")
+            print(f"Error : {e}")
+            score = 0
 
         return score
