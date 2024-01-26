@@ -1,4 +1,4 @@
-# BG PROJETC
+# BG PROJECT
 
 ## Description
 
